@@ -1,5 +1,6 @@
 {
     "port":5001,
+    "jwtSecret":"blog-key",
     "mongoUri":"mongodb+srv://blog-admin:k1F4Sz2CCmHfJYA0@cluster0.irsub.mongodb.net/blog?retryWrites=true&w=majority"
 }
 

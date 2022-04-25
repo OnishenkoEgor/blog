@@ -3,10 +3,10 @@ const config = require('config')
 const mongoosee = require('mongoose')
 
 const app = express()
+let authRoutes = require('./routes/auth.routes');
+app.use('/api/auth', authRoutes)
 
-app.use('api/auth', require('./routes/auth.routes'))
-
-const PORT = config.get('port') || 5000
+const PORT = config.get('port') || 5001
 
 async function start() {
     try {
