@@ -7,32 +7,31 @@ const User = require('../models/User')
 const router = Router()
 
 router.post('/register', [
-    check('email', 'Incorrect email').isEmail(),
-    check('password', 'Too short pass').isLength({ min: 6 })
+    check('email', 'Incorrect email'),
+    check('password', 'Too short pass')
 ], async (req, res) => {
     try {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             return res.status(400).json({
-                errors: errors.array(),
+                errors,
                 message: 'Incorrect data to registration'
             })
         }
-
         const { email, password } = req.body
-
         const existedUser = await User.findOne({ email })
+
         if (existedUser) {
-            return res.json(400).json({ message: 'User with this email already existed' })
+            return res.status(400).json({ message: 'User with this email already existed' })
         }
 
         const hashedPass = await bcrypt.hash(password, 12)
         const user = new User({ email, password: hashedPass })
         await user.save()
 
-        res.status(201).json('User created')
-    } catch (e) {
-        res.status(500).json({ message: 'Critical routes error' })
+        res.status(201).json({ message: 'User created' })
+    } catch (error) {
+        res.status(400).json({ message: 'Catch fatal error', error })
     }
 })
 
@@ -66,14 +65,65 @@ router.post('/login', [
 
         res.json({ token, userId: user.id })
 
-    } catch (e) {
-        res.status(500).json({ message: 'Critical routes error' })
+    } catch (error) {
+        res.status(400).json({ message: 'Catch fatal error', error })
+    }
+})
+router.post('/delete/', [], async (req, res) => {
+    try {
+        // const errors = validationResult(req);
+        // if (!errors.isEmpty()) {
+        //     return res.status(400).json({ message: 'email not correct' })
+        // }
+
+        console.log(req.body.id);
+
+        const user = await User.findByIdAndDelete(req.body.id);
+        if (!user) {
+            return res.status(400).json({ message: 'can not remove user' })
+        }
+        res.status(200).json({ message: 'user succesful deleted' })
+    } catch (error) {
+        res.status(400).json({ message: 'Catch fatal error', error })
     }
 })
 
+router.get('/test-get',  (req, res) => {
+    try {
+        return res.status(200).json({ check: "check" })
+    } catch (error) {
+        res.status(400).json({ message: 'Catch fatal error', error })
+    }
+})
 
-router.get('/test-get', (req, res) => {
-    res.write('check')
+router.get('/users', async (req, res) => {
+    try {
+
+        const users =  await User.find({});
+
+        if (!users) {
+            return res.status(400).json({ message: "users is empty" })
+        }
+
+        res.status(200).json({ response: users })
+
+    } catch (error) {
+        res.status(400).json({ message: 'Catch fatal error', error })
+    }
+})
+
+router.get('/user/:id', async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+
+        if (!user) {
+            return res.status(400).json({ message: 'cant fint user' })
+        }
+
+        res.status(200).json({ response: user })
+    } catch (error) {
+        res.status(400).json({ message: 'Catch fatal error', error })
+    }
 })
 
 module.exports = router

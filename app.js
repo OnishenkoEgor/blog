@@ -1,19 +1,22 @@
 const express = require('express')
 const config = require('config')
 const mongoosee = require('mongoose')
-
-const app = express()
+const parser = require('body-parser')
+const app = express();
 let authRoutes = require('./routes/auth.routes');
-app.use('/api/auth', authRoutes)
 
-const PORT = config.get('port') || 5001
+app.use(parser.json())
+app.use(parser.urlencoded({
+    extended: true
+}));
+
+app.use('/auth', authRoutes);
+
+const PORT = config.get('port') || 8001
 
 async function start() {
     try {
-        await mongoosee.connect(config.get('mongoUri'), {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        })
+        await mongoosee.connect(config.get('mongoUri'))
         app.listen(PORT, () => {
             console.log(`App started on port - ${PORT}`)
         })
