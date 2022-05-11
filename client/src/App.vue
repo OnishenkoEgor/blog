@@ -9,10 +9,9 @@ export default {
   setup(props) {
     const store = useStore();
     let token = localStorage.getItem("token");
-    let userId = localStorage.getItem("userId");
-    if (token && userId) {
+
+    if (token) {
       store.commit("setToken", token);
-      store.commit("setUserId", userId);
     }
   },
 };

@@ -4,13 +4,14 @@ const mongoosee = require('mongoose')
 const parser = require('body-parser')
 const app = express();
 let authRoutes = require('./routes/auth.routes');
-
+let usersRoutes = require('./routes/users.routes')
 app.use(parser.json())
 app.use(parser.urlencoded({
     extended: true
 }));
 
 app.use('/auth', authRoutes);
+app.use('/users',usersRoutes)
 
 const PORT = config.get('port') || 8001
 

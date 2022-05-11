@@ -3,12 +3,20 @@
     <h1>Users</h1>
     <transition-group name="users" tag="ul">
       <li
+        class="user-item"
         v-for="user in users"
         :key="user._id"
         :class="{ current: user._id == currentUserId }"
       >
         <p>{{ user.email }}</p>
-        <div @click="deleteUser(user._id)" class="delete">Delete</div>
+        <router-link
+          class="user-item__button open"
+          :to="{ name: 'user', params: { id: user._id } }"
+          >Open</router-link
+        >
+        <div @click="deleteUser(user._id)" class="user-item__button delete">
+          Delete
+        </div>
       </li>
     </transition-group>
   </div>
@@ -27,13 +35,13 @@ export default {
     const store = useStore();
 
     function deleteUser(id) {
-      post(`/api/auth/delete`, { id }).then((res) => {
+      post(`/api/delete`, { id }).then((res) => {
         updateUsers();
       });
     }
 
     function updateUsers() {
-      get("/api/auth/users").then((res) => {
+      get("/api/users").then((res) => {
         users.value = res.response;
       });
     }
@@ -49,12 +57,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
-ul{
+ul {
   padding-left: 0;
 }
-li {
+.user-item {
   display: grid;
-  grid-template-columns: 1fr max-content;
+  grid-template-columns: 1fr max-content max-content;
   align-items: center;
   column-gap: 32px;
   padding: 16px;
@@ -70,18 +78,23 @@ li {
     text-align: left;
     margin: 0;
   }
+  &__button {
+    padding: 6px 12px;
+    border-radius: 2px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+  }
 }
 .delete {
-  padding: 6px 12px;
-  border-radius: 2px;
   background-color: #ff3434;
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
+}
+.open {
+  background-color: #4db6ac;
 }
 
-.list-enter-active,
-.list-leave-active {
+.users-enter-active,
+.users-leave-active {
   transition: opacity 0.5s;
 }
 .users-enter,

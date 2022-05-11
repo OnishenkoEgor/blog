@@ -22,12 +22,15 @@
               >{{ item?.name }}</router-link
             >
           </div>
-          <div class="nav__icon" v-if="logged">
+          <router-link v-if="logged" to="/" class="nav__icon">
             <img
               src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"
               alt=""
             />
-          </div>
+            <div class="nav__icon-menu">
+              <div class="nav__icon-item" @click="logout">Logout</div>
+            </div>
+          </router-link>
         </div>
       </div>
     </div>
@@ -39,18 +42,35 @@ import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { ref, onBeforeMount, computed } from "vue";
 
+import { useLogin } from "@/hooks/useLogin";
+
 export default {
   name: "Header",
   setup(props, context) {
     const items = ref([]);
     const router = useRouter();
     const store = useStore();
+    const { logout } = useLogin();
 
-    items.value = router.getRoutes();
+    items.value = [
+      {
+        path: "/about",
+        name: "about",
+      },
+      {
+        path: "/auth",
+        name: "auth",
+      },
+      {
+        path: "/users",
+        name: "users",
+      },
+    ];
 
     return {
       items,
       logged: computed(() => store.getters.logged),
+      logout,
     };
   },
 };
@@ -72,7 +92,6 @@ export default {
     display: grid;
     grid-template-columns: repeat(2, max-content);
     align-items: center;
-    column-gap: 30px;
   }
 
   &__logo {
@@ -94,11 +113,13 @@ export default {
   }
 
   &__icon {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 30px;
+    margin-left: 30px;
     cursor: pointer;
 
     img {
@@ -106,6 +127,35 @@ export default {
       max-height: 100%;
       object-fit: cover;
       border-radius: 50%;
+    }
+
+    &:hover {
+      .nav__icon-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, 0);
+      }
+    }
+
+    &-menu {
+      position: absolute;
+      left: 50%;
+      top: 100%;
+      transform: translate(-50%, -3px);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.3s all;
+    }
+
+    &-item {
+      padding: 5px;
+      background-color: #fff;
+      &:hover {
+        background: #eee;
+      }
     }
   }
 }
