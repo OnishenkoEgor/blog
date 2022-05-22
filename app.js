@@ -3,8 +3,10 @@ const config = require('config')
 const mongoosee = require('mongoose')
 const parser = require('body-parser')
 const app = express();
-let authRoutes = require('./routes/auth.routes');
-let usersRoutes = require('./routes/users.routes')
+const authRoutes = require('./routes/auth.routes');
+const usersRoutes = require('./routes/users.routes');
+const postRoutes = require('./routes/post.routes');
+
 app.use(parser.json())
 app.use(parser.urlencoded({
     extended: true
@@ -12,6 +14,7 @@ app.use(parser.urlencoded({
 
 app.use('/auth', authRoutes);
 app.use('/users',usersRoutes)
+app.use('/posts',postRoutes)
 
 const PORT = config.get('port') || 8001
 

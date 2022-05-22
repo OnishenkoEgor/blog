@@ -65,6 +65,10 @@ export default {
         path: "/users",
         name: "users",
       },
+      {
+        path: "/posts",
+        name: "posts",
+      },
     ];
 
     return {

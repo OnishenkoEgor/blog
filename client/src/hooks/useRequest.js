@@ -1,7 +1,11 @@
+import store from "@/store";
+
 export function useRequest() {
 
     async function get(url, responseType = 'json') {
-        return fetch(url).then(res => responseType == 'json' ? res.json() : res.body)
+        return fetch(url,{
+            authentication: store.getters.token
+        }).then(res => responseType == 'json' ? res.json() : res.body)
     }
 
     async function post(url, body, headers = {
@@ -9,7 +13,10 @@ export function useRequest() {
     }) {
         return fetch(url, {
             method: 'POST',
-            headers,
+            headers:{
+                authentication: store.getters.token,
+                ...headers
+            },
             body: JSON.stringify(body)
         }).then(async res => {
             let body = await res.json();

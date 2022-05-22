@@ -5,7 +5,6 @@ export default createStore({
     users: [],
     token: '',
     userEmail: '',
-    test: 'test',
     checker: false
   }),
   getters: {
@@ -17,6 +16,9 @@ export default createStore({
     },
     currentUserId(state) {
       return state.userId
+    },
+    token(state) {
+      return state.token ?? false
     }
   },
   mutations: {
