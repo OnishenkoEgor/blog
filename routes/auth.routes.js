@@ -63,7 +63,16 @@ router.post('/login', [
 
         const token = jwt.sign({ userId: user.id }, config.get('jwtSecret'), { expiresIn: '1h' })
 
-        res.json({ token, userId: user.id })
+        res.json({
+            token, user: {
+                id:user.id,
+                email: user.email,
+                name: user.name,
+                surname: user.surname,
+                phone: user.phone,
+                photo: user.photo
+            }
+        })
 
     } catch (error) {
         res.status(400).json({ message: 'Catch fatal error', error })

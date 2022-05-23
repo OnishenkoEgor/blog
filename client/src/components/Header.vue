@@ -22,11 +22,15 @@
               >{{ item?.name }}</router-link
             >
           </div>
-          <router-link v-if="logged" to="/" class="nav__icon">
+          <router-link v-if="logged" :to="`/users/${user?.id}`" class="nav__icon">
             <img
-              src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"
+              :src="
+                user?.photo ??
+                'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png'
+              "
               alt=""
             />
+            <p>{{ user?.name }}</p>
             <div class="nav__icon-menu">
               <div class="nav__icon-item" @click="logout">Logout</div>
             </div>
@@ -74,6 +78,7 @@ export default {
     return {
       items,
       logged: computed(() => store.getters.logged),
+      user: computed(() => store.getters.getUser),
       logout,
     };
   },
@@ -118,19 +123,29 @@ export default {
 
   &__icon {
     position: relative;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 8px;
     align-items: center;
     justify-content: center;
-    width: 30px;
     margin-left: 30px;
     cursor: pointer;
+    font-weight: 600;
+    text-transform: capitalize;
 
     img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: cover;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
+    }
+
+    &::before{
+      content:'';
+      display: block;
+      width: 1px;
+      border-radius: 1px;
+      height:80%;
+      background-color: rgba(0, 0, 0, 0.2);
     }
 
     &:hover {
@@ -143,6 +158,7 @@ export default {
 
     &-menu {
       position: absolute;
+      width: 100%;
       left: 50%;
       top: 100%;
       transform: translate(-50%, -3px);

@@ -70,7 +70,7 @@ export default {
                   message.value = res.body.message;
                   break;
                 case "login":
-                  let logged = login(res.body.token);
+                  let logged = login(res.body.token,res.body.user);
                   if (logged) {
                     email.value = "";
                     password.value = "";
