@@ -21,7 +21,10 @@ a {
 }
 
 h1 {
+    font-size: 30px;
+    font-weight: 600;
     text-align: left;
+    margin-bottom: 16px;
 }
 
 button {
@@ -42,4 +45,8 @@ button {
 .container {
     max-width: 1200px;
     margin: 0 auto;
+}
+
+.main{
+    padding: 16px 0;
 }

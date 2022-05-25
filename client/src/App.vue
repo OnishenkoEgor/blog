@@ -1,6 +1,8 @@
 <template>
   <Header></Header>
-  <router-view />
+  <div class="main">
+    <router-view />
+  </div>
 </template>
 <script>
 import { useStore } from "vuex";

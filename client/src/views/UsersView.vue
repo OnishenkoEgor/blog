@@ -35,7 +35,7 @@ export default {
     const store = useStore();
 
     function deleteUser(id) {
-      post(`/api/delete`, { id }).then((res) => {
+      post(`/api/users/delete`, { id }).then((res) => {
         updateUsers();
       });
     }

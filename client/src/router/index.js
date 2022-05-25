@@ -5,6 +5,7 @@ import AuthView from '../views/AuthView.vue'
 import PostsView from '../views/PostsView.vue'
 import UsersView from '../views/UsersView.vue'
 import SingleUserView from '../views/SingleUserView.vue'
+import SinglePostView from '../views/SinglePostView.vue'
 
 const routes = [
   {
@@ -26,6 +27,11 @@ const routes = [
     path: '/posts',
     name: 'posts',
     component: PostsView
+  },
+  {
+    path: '/posts/:id',
+    name: 'post',
+    component: SinglePostView
   },
   {
     path: '/users',
