@@ -2,41 +2,46 @@
   <div class="posts">
     <div class="posts__list">
       <router-link
+        v-if="posts.length > 0"
         v-for="post in posts"
         :to="`/posts/${post._id}`"
         class="posts__item"
       >
         <p class="posts__title">{{ post.title }}</p>
         <p class="posts__content">{{ post.content }}</p>
-        <router-link :to="`/users/${post.authorID}`" class="posts__author">{{
-          post.author
-        }}</router-link>
+        <router-link
+          :to="`/users/${post.authorID}`"
+          class="posts__author button"
+          >{{ post.author }}</router-link
+        >
       </router-link>
+      <p v-else>Not found posts</p>
     </div>
   </div>
 </template>
 <script>
 import { useRequest } from "@/hooks/useRequest";
-import { ref } from "@vue/reactivity";
+import { ref, toRef, toRefs } from "@vue/reactivity";
+import { computed, watch } from "@vue/runtime-core";
 export default {
   name: "Post-list",
-  props:{
-    params:{
-      type:Object,
-      default:{}
-    }
+  props: {
+    posts: {
+      type: Array,
+      required: true,
+      default: [],
+    },
   },
   setup(props) {
     const { get } = useRequest();
-    const posts = ref({});
-    console.log(props.params)
-    get(`/api/posts/${''}`).then((res) => {
+    const { posts } = toRefs(props);
 
-      posts.value = res.response;
+    watch(posts, (first, second) => {
+      posts.value = first;
     });
 
     return {
-      posts,
+      posts: computed(() => posts.value),
     };
   },
 };
@@ -68,7 +73,7 @@ export default {
     margin-left: auto;
     margin-right: 0;
     text-align: right;
-    color:blue;
+    color: #fff;
   }
 }
 </style>

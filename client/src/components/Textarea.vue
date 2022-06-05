@@ -59,9 +59,7 @@ export default {
     resize: none;
 
     &.invalid {
-      input {
-        border-color: red;
-      }
+      border-color: red;
     }
   }
 }

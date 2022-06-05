@@ -35,8 +35,8 @@
         </div>
       </div>
       <PostForm></PostForm>
-      User ID :{{user.id}}
-      <Post-list :params="{ authorID: `${ user.length}`}"></Post-list>
+      <h1>Posts</h1>
+      <Post-list :posts="posts"></Post-list>
     </div>
   </div>
 </template>
@@ -45,14 +45,18 @@
 import { useRoute } from "vue-router";
 import { useUser } from "@/hooks/useUser";
 import { useRequest } from "@/hooks/useRequest";
+import { usePosts } from "@/hooks/usePosts.js";
 import { ref } from "@vue/reactivity";
+import { computed } from "@vue/runtime-core";
 
 export default {
   setup(props) {
-    const { get } = useRequest();
+    const { getPostsById } = usePosts();
     const { params } = useRoute();
+    const { get } = useRequest();
     const { getUser } = useUser();
     const user = ref("");
+    const posts = ref([]);
 
     function loadUser() {
       get(`/api/users/${params.id}`).then(({ response }) => {
@@ -60,10 +64,16 @@ export default {
       });
     }
 
+    function loadPosts() {
+      getPostsById(params.id).then((res) => (posts.value = res));
+    }
+
     loadUser();
+    loadPosts();
 
     return {
       user,
+      posts,
     };
   },
 };
@@ -98,6 +108,11 @@ export default {
     }
   }
   &__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 22px 0;
+
     &-item {
       display: grid;
       grid-template-columns: max-content 1fr max-content;

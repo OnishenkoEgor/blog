@@ -8,29 +8,28 @@ const router = new Router();
 
 router.get('/', async (req, res) => {
     try {
-        let posts = req.query.authorID ? await Post.findOne({ authorID }) : await Post.find({});
+        let { authorID } = req.query;
+        let posts = authorID ? await Post.findOne({ authorID }) : await Post.find({});
 
-        if (!posts.length) {
-            res.status(400).json({ message: 'Posts is empty' })
+        if ((!authorID && posts.length == 0) || (authorID && posts == null)) {
+            return res.status(400).json({ message: 'Posts is empty' })
         }
 
-        res.status(200).json({ response: posts })
+        res.status(200).json({ response: Array.isArray(posts) ? posts : [posts] })
     } catch (e) {
-        console.log(e)
-        res.status(400).json({ message: "Fatal error in getting posts : " + e })
+        console.log({ message: "Fatal error in getting posts : " + e })
     }
-
 })
 
 router.get('/:id', async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
         if (!post) {
-            res.status(400).json({ message: "Not founded post dy id" })
+            return res.status(400).json({ message: "Not founded post dy id" })
         }
-        res.status(200).json({ response: post })
+        return res.status(200).json({ response: post })
     } catch (e) {
-        res.status(400).json({ message: "Fatal error in gettind post by id:" + e })
+        console.log({ message: "Fatal error in gettind post by id:" + e })
     }
 })
 
@@ -45,7 +44,7 @@ router.post('/create', auth, async (req, res) => {
         await post.save()
         res.status(200).json({ message: "Post Created" })
     } catch (e) {
-        res.status(400).json({ message: "Fatal error in creating posts : " + e })
+        console.log({ message: "Fatal error in creating posts : " + e })
     }
 })
 

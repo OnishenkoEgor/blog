@@ -61,7 +61,7 @@ router.post('/login', [
             return res.status(400).json({ message: 'Invalid data' })
         }
 
-        const token = jwt.sign({ userId: user.id }, config.get('jwtSecret'), { expiresIn: '1h' })
+        const token = jwt.sign({ userId: user.id }, config.get('jwtSecret'), { expiresIn: '1d' })
 
         res.json({
             token, user: {

@@ -16,7 +16,7 @@ export function useLogin() {
         try {
             store.commit('setToken', '')
             store.commit('setUser', null)
-            localStorage.setItem('id', '')
+            localStorage.removeItem('id', '')
             localStorage.removeItem('token')
             return true
         } catch (e) {

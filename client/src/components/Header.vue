@@ -22,7 +22,11 @@
               >{{ item?.name }}</router-link
             >
           </div>
-          <router-link v-if="logged" :to="`/users/${user?.id}`" class="nav__icon">
+          <router-link
+            v-if="logged"
+            :to="`/users/${user?.id}`"
+            class="nav__icon"
+          >
             <img
               :src="
                 user?.photo ??
@@ -44,7 +48,7 @@
 <script>
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { ref, onBeforeMount, computed } from "vue";
+import { ref, onBeforeMount, computed, watch } from "vue";
 
 import { useLogin } from "@/hooks/useLogin";
 
@@ -55,15 +59,12 @@ export default {
     const router = useRouter();
     const store = useStore();
     const { logout } = useLogin();
+    const logged = ref(store.getters.logged);
 
     items.value = [
       {
         path: "/about",
         name: "about",
-      },
-      {
-        path: "/auth",
-        name: "auth",
       },
       {
         path: "/users",
@@ -74,6 +75,14 @@ export default {
         name: "posts",
       },
     ];
+    watch(logged, () => {
+      if (!logged) {
+        items.value.push({
+          path: "/auth",
+          name: "auth",
+        });
+      }
+    });
 
     return {
       items,
@@ -139,12 +148,12 @@ export default {
       border-radius: 50%;
     }
 
-    &::before{
-      content:'';
+    &::before {
+      content: "";
       display: block;
       width: 1px;
       border-radius: 1px;
-      height:80%;
+      height: 80%;
       background-color: rgba(0, 0, 0, 0.2);
     }
 

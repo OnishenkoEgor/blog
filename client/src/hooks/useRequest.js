@@ -3,7 +3,7 @@ import store from "@/store";
 export function useRequest() {
 
     async function get(url, responseType = 'json') {
-        return fetch(url,{
+        return fetch(url, {
             authentication: store.getters.token
         }).then(res => responseType == 'json' ? res.json() : res.body)
     }
@@ -13,7 +13,7 @@ export function useRequest() {
     }) {
         return fetch(url, {
             method: 'POST',
-            headers:{
+            headers: {
                 authentication: store.getters.token,
                 ...headers
             },
