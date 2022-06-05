@@ -34,7 +34,7 @@ import { useRequest } from "../hooks/useRequest.js";
 import { computed, reactive, ref, toRefs } from "vue";
 
 export default {
-  name: "Registration",
+  name: "registration-form",
   setup(props) {
     const { post } = useRequest();
     const message = ref("");

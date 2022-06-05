@@ -1,11 +1,12 @@
 import Header from './Header.vue'
-import Input from './Input.vue';
-import Textarea from './Textarea.vue';
 import Registration from './Registration.vue'
-import FadeTransition from './FadeTransition.vue'
 import PostForm from './PostForm.vue'
 import PostList from './PostList.vue';
 
+
+import animations from './animations';
+import ui from './UI';
+
 export default [
-    Header, Input, Registration, FadeTransition, PostForm, Textarea, PostList
+    Header, Registration, PostForm, PostList, ...animations, ...ui
 ]

@@ -33,7 +33,7 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-router.post('/create', auth, async (req, res) => {
+router.post('/', auth, async (req, res) => {
     try {
         const { title, content } = req.body;
         const { user } = req;
@@ -44,9 +44,24 @@ router.post('/create', auth, async (req, res) => {
         await post.save()
         res.status(200).json({ message: "Post Created" })
     } catch (e) {
-        console.log({ message: "Fatal error in creating posts : " + e })
+        res.status(400).json({ message: `Fatal error on create post: ${e}` })
     }
 })
 
+router.put('/', auth, (req, res) => {
+    try {
+
+    } catch (e) {
+        res.status(400).json({ message: `Fatal error on put post: ${e}` })
+    }
+})
+
+router.delete('/', auth, (req, res) => {
+    try {
+
+    } catch (e) {
+        res.status(400).json({ message: `Fatal error on delete post: ${e}` })
+    }
+})
 
 module.exports = router

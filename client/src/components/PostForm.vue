@@ -28,7 +28,7 @@ import { useRequest } from "@/hooks/useRequest";
 import { useStore } from "vuex";
 
 export default {
-  name: "PostForm",
+  name: "post-form",
   setup(props) {
     const { post } = useRequest();
     const store = useStore();

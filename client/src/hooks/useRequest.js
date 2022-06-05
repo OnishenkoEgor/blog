@@ -27,7 +27,22 @@ export function useRequest() {
         })
     }
 
+    async function put(url, body, headers = {
+        "Content-Type": "application/json",
+    }) {
+        return fetch(url, {
+            headers
+        })
+    }
+    async function remove(url, body, headers = {
+        "Content-Type": "application/json",
+    }) {
+        return fetch(url, {
+            headers
+        })
+    }
+
     return {
-        get, post
+        get, post, put, remove
     }
 }

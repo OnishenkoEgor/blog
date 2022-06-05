@@ -20,11 +20,10 @@
   </div>
 </template>
 <script>
-import { useRequest } from "@/hooks/useRequest";
-import { ref, toRef, toRefs } from "@vue/reactivity";
+import { toRefs } from "@vue/reactivity";
 import { computed, watch } from "@vue/runtime-core";
 export default {
-  name: "Post-list",
+  name: "post-list",
   props: {
     posts: {
       type: Array,
@@ -33,7 +32,6 @@ export default {
     },
   },
   setup(props) {
-    const { get } = useRequest();
     const { posts } = toRefs(props);
 
     watch(posts, (first, second) => {
