@@ -1,36 +1,20 @@
 <template>
   <div class="container">
     <h1>Users</h1>
-    <transition-group name="users" tag="ul">
-      <li
-        class="user-item"
-        v-for="user in users"
-        :key="user._id"
-        :class="{ current: user._id == currentUserId }"
-      >
-        <p>{{ user.email }}</p>
-        <router-link
-          class="user-item__button open"
-          :to="{ name: 'user', params: { id: user._id } }"
-          >Open</router-link
-        >
-        <div @click="deleteUser(user._id)" class="user-item__button delete">
-          Delete
-        </div>
-      </li>
-    </transition-group>
+    <h2>{{ typeof users }}</h2>
+    <user-list :users="users"></user-list>
   </div>
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useRequest } from "@/hooks/useRequest.js";
 import { useStore } from "vuex";
 
 export default {
   name: "UsersView",
   setup(props) {
-    let users = ref({});
+    let users = ref([]);
     const { get, post } = useRequest();
     const store = useStore();
 
@@ -42,6 +26,7 @@ export default {
 
     function updateUsers() {
       get("/api/users").then((res) => {
+        console.log(res.response)
         users.value = res.response;
       });
     }
@@ -91,14 +76,5 @@ ul {
 }
 .open {
   background-color: #4db6ac;
-}
-
-.users-enter-active,
-.users-leave-active {
-  transition: opacity 0.5s;
-}
-.users-enter,
-.users-leave-to {
-  opacity: 0;
 }
 </style>

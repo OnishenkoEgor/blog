@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h1>Posts</h1>
-    <Post-list :posts="posts"> </Post-list>
+    <post-list :posts="posts"> </post-list>
   </div>
 </template>
 <script>
