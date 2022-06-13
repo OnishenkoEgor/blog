@@ -43,9 +43,9 @@
 
 <script>
 import { useRoute } from "vue-router";
-import { useUser } from "@/hooks/useUser";
+import { useUser } from "@/hooks/useUsers";
 import { useRequest } from "@/hooks/useRequest";
-import { usePosts } from "@/hooks/usePosts.js";
+import { usePosts } from "@/hooks/usePosts";
 import { ref } from "@vue/reactivity";
 import { computed } from "@vue/runtime-core";
 

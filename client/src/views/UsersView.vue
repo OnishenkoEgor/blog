@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <h1>Users</h1>
-    <h2>{{ typeof users }}</h2>
     <user-list :users="users"></user-list>
   </div>
 </template>
@@ -26,7 +25,6 @@ export default {
 
     function updateUsers() {
       get("/api/users").then((res) => {
-        console.log(res.response)
         users.value = res.response;
       });
     }

@@ -74,6 +74,10 @@ export default {
         path: "/posts",
         name: "posts",
       },
+      {
+        path:'/test',
+        name:'test'
+      }
     ];
     watch(logged, () => {
       if (!logged) {

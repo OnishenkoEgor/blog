@@ -7,6 +7,8 @@ import UsersView from '../views/UsersView.vue'
 import SingleUserView from '../views/SingleUserView.vue'
 import SinglePostView from '../views/SinglePostView.vue'
 
+import TestView from '../views/TestPage.vue';
+
 const routes = [
   {
     path: '/',
@@ -42,6 +44,11 @@ const routes = [
     path: '/users/:id',
     name: 'user',
     component: SingleUserView
+  },
+  {
+    path:'/test',
+    name:'test',
+    component:TestView
   }
 ]
 
