@@ -7,32 +7,22 @@
 
 <script>
 import { computed, reactive, ref } from "vue";
-import { useRequest } from "@/hooks/useRequest.js";
 import { useStore } from "vuex";
+import { useUsers } from "@/hooks/useUsers";
 
 export default {
   name: "UsersView",
   setup(props) {
     let users = ref([]);
-    const { get, post } = useRequest();
-    const store = useStore();
+    let { getAllUsers } = useUsers();
 
-    function deleteUser(id) {
-      post(`/api/users/delete`, { id }).then((res) => {
-        updateUsers();
-      });
-    }
-
-    function updateUsers() {
-      get("/api/users").then((res) => {
-        users.value = res.response;
-      });
-    }
-    updateUsers();
+    getAllUsers().then((res) => {
+      console.log(res);
+      users.value = res;
+    });
 
     return {
       users,
-      deleteUser,
       currentUserId: computed(() => store.getters.currentUserId),
     };
   },

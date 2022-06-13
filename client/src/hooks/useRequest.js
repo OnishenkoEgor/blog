@@ -6,8 +6,10 @@ export function useRequest() {
         try {
             return fetch(url, {
                 authentication: store.getters.token
-            }).then(res => res.json())
-                .catch(e => { throw e })
+            }).then(async res => ({
+                body: await res.json(),
+                status: res.status
+            })).catch(e => { throw e })
         } catch (e) {
             console.error(e);
             return false;
@@ -23,10 +25,12 @@ export function useRequest() {
                     ...headers
                 },
                 body: JSON.stringify(body)
-            }).then(res => ({ body: res.json(), status: res.status }))
-                .catch(e => {
-                    throw e
-                })
+            }).then(async res => ({
+                body: await res.json(),
+                status: res.status
+            })).catch(e => {
+                throw e
+            })
         } catch (e) {
             console.error(e);
             return false;
@@ -42,7 +46,12 @@ export function useRequest() {
                     ...headers
                 },
                 body: JSON.stringify(body)
-            }).then(res => ({ body: res.json(), status: res.status }))
+            }).then(async res => ({
+                body: await res.json(),
+                status: res.status
+            })).catch(e => {
+                throw e
+            })
         }
         catch (e) {
             console.error(e);
@@ -58,10 +67,12 @@ export function useRequest() {
                     ...headers
                 },
                 body: JSON.stringify(body)
-            }).then(res => ({ body: res.json(), status: res.status }))
-                .catch(e => {
-                    throw e
-                })
+            }).then(async res => ({
+                body: await res.json(),
+                status: res.status
+            })).catch(e => {
+                throw e
+            })
         }
         catch (e) {
             console.error(e);
