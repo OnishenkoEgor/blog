@@ -21,8 +21,11 @@
           </div>
         </div>
         <div class="user__actions">
-          <router-link class="button" :to="user._id">Open</router-link>
-          <router-link class="button" :to="user._id">Delete</router-link>
+          <router-link
+            class="button"
+            :to="{ path: `/users/${user._id}`}"
+            >Open</router-link
+          >
         </div>
       </div>
     </div>
@@ -31,6 +34,7 @@
 
 <script>
 import { toRefs } from "@vue/reactivity";
+import { useUsers } from "@/hooks/useUsers";
 export default {
   name: "user-single",
   props: {
@@ -42,11 +46,11 @@ export default {
       },
     },
   },
-  setup(props) {
+  setup(props, { emit }) {
     const { user } = toRefs(props);
-    console.log(user.value);
+
     return {
-      user,
+      user
     };
   },
 };
@@ -101,7 +105,7 @@ export default {
 
   &__actions {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr ;
     column-gap: 8px;
     padding-top: 12px;
   }

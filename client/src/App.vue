@@ -6,29 +6,31 @@
 </template>
 <script>
 import { useStore } from "vuex";
-import { onMounted } from "vue";
-import { useRequest } from "@/hooks/useRequest.js";
+import { useLogin } from "@/hooks/useLogin";
+import { useUsers } from "@/hooks/useUsers";
 export default {
   setup(props) {
-    try {
-      const store = useStore();
-      const { get } = useRequest();
-      let token = localStorage.getItem("token");
-      let userId = localStorage.getItem("id");
+    const store = useStore();
+    const { validateToken, logout } = useLogin();
+    const { getUser } = useUsers();
 
-      if (token) {
-        store.commit("setToken", token);
-        get(`/api/users/${userId}`).then((res) => {
-          store.commit("setUser", res.response);
-        });
-      }
-    } catch (e) {
-      console.log(e);
+    let token = localStorage.getItem("token");
+    let userId = localStorage.getItem("id");
+
+    if (token) {
+      validateToken(token).then((res) => {
+        if (res) {
+          getUser(userId).then((user) => {
+            store.commit("setUser", user);
+          });
+        }else{
+          alert('token expiered')
+        }
+      });
     }
   },
 };
 </script>
-
 
 <style lang="scss">
 @import "./app.scss";

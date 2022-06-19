@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken')
 const config = require('config')
 const User = require('../models/User')
 const router = Router()
+const auth = require('../middleware/auth.middleware')
+
 
 router.post('/register', [
     check('email', 'Incorrect email'),
@@ -24,13 +26,13 @@ router.post('/register', [
         if (existedUser) {
             return res.status(400).json({ message: 'User with this email already existed' })
         }
-
         const hashedPass = await bcrypt.hash(password, 12)
         const user = new User({ name, surname, phone, photo, email, password: hashedPass })
         await user.save()
 
         res.status(200).json({ message: 'User created' })
     } catch (error) {
+        console.dir(error)
         res.status(400).json({ message: 'Catch fatal error', error })
     }
 })
@@ -63,9 +65,9 @@ router.post('/login', [
 
         const token = jwt.sign({ userId: user.id }, config.get('jwtSecret'), { expiresIn: '1d' })
 
-        res.json({
+        res.status(200).json({
             token, user: {
-                id:user.id,
+                id: user.id,
                 email: user.email,
                 name: user.name,
                 surname: user.surname,
@@ -75,6 +77,19 @@ router.post('/login', [
         })
 
     } catch (error) {
+        res.status(400).json({ message: 'Catch fatal error', error })
+    }
+})
+
+router.post('/validate', auth, (req, res) => {
+    try {
+        const { user } = req;
+        if (user) {
+            res.status(200).json({})
+        } else {
+            res.status(400).json({ message: 'Not find user' })
+        }
+    } catch (e) {
         res.status(400).json({ message: 'Catch fatal error', error })
     }
 })

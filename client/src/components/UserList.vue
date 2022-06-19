@@ -1,7 +1,10 @@
 <template>
   <transition-group name="users" tag="ul">
     <ul class="users-list" v-if="users.length > 0">
-      <user-single v-for="user in users" :user="user"></user-single>
+      <user-single
+        v-for="user in users"
+        :user="user"
+      ></user-single>
     </ul>
   </transition-group>
 </template>
@@ -18,12 +21,13 @@ export default {
       default: [],
     },
   },
-  setup(props) {
+  setup(props, { emit }) {
     const { users } = toRefs(props);
 
     watch(users, (newUsers) => {
       console.log(newUsers);
     });
+    
     return {
       users,
     };

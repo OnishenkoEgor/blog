@@ -1,6 +1,5 @@
 <template>
   <div class="registration">
-    <h1>Registration</h1>
     <div class="registration__form">
       <div class="registration__form-content">
         <c-input
@@ -30,13 +29,14 @@
   </div>
 </template>
 <script>
-import { useRequest } from "../hooks/useRequest.js";
+import { useLogin } from "@/hooks/useLogin";
 import { computed, reactive, ref, toRefs } from "vue";
 
 export default {
   name: "registration-form",
   setup(props) {
-    const { post } = useRequest();
+    const { register } = useLogin();
+
     const message = ref("");
     const error = ref(false);
 
@@ -73,38 +73,38 @@ export default {
       },
     });
 
-    function register() {
-      if (valid()) {
-        post("/api/auth/register", {
-          name: user.name.value,
-          surname: user.surname.value,
-          phone: user.phone.value,
-          photo: user.photo.value,
-          email: user.email.value,
-          password: user.password.value,
-        }).then((res) => {
-          if (res.status == 200) {
-            user.name.value = "";
-            user.surname.value = "";
-            user.phone.value = "";
-            user.photo.value = "";
-            user.email.value = "";
-            user.password.value = "";
-            error.value = false;
-          } else {
-            error.value = true;
-          }
-          message.value = res.body.message;
-        });
-      } else {
-        message.value = "Please fill all input.";
-        error.value = true;
-      }
-      setTimeout(() => {
-        message.value = "";
-        error.value = false;
-      }, 3500);
-    }
+    // function register() {
+    //   if (valid()) {
+    //     post("/api/auth/register", {
+    //       name: user.name.value,
+    //       surname: user.surname.value,
+    //       phone: user.phone.value,
+    //       photo: user.photo.value,
+    //       email: user.email.value,
+    //       password: user.password.value,
+    //     }).then((res) => {
+    //       if (res.status == 200) {
+    //         user.name.value = "";
+    //         user.surname.value = "";
+    //         user.phone.value = "";
+    //         user.photo.value = "";
+    //         user.email.value = "";
+    //         user.password.value = "";
+    //         error.value = false;
+    //       } else {
+    //         error.value = true;
+    //       }
+    //       message.value = res.body.message;
+    //     });
+    //   } else {
+    //     message.value = "Please fill all input.";
+    //     error.value = true;
+    //   }
+    //   setTimeout(() => {
+    //     message.value = "";
+    //     error.value = false;
+    //   }, 3500);
+    // }
 
     function valid() {
       let valid = true;

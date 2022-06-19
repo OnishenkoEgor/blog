@@ -4,11 +4,11 @@
     <p class="post-single__content">{{ content }}</p>
     <div class="post-single__actions">
       <router-link
-        :to="{ name: users, params: { id: authorID } }"
+        :to="{ path: `/users/${authorID}`, params: { id: authorID } }"
         class="button"
         >Author</router-link
       >
-      <router-link :to="{ name: posts, params: { id } }" class="button"
+      <router-link :to="{ path: `/users/${id}`, params: { id } }" class="button"
         >Open</router-link
       >
     </div>
@@ -58,7 +58,7 @@ export default {
   border: 1px solid #eee;
   border-radius: 8px;
   transition: 0.3s all;
-  
+
   &:hover {
     box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.2);
   }

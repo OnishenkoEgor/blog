@@ -14,7 +14,6 @@ module.exports = async (req, res, next) => {
             res.status(400).json({ message: 'No token in headers' })
         }
     } catch (e) {
-        res.status(400).json({message:'Fatal error'})
-        console.log(e)
+        res.status(403).json({ message: 'Auth is failed' })
     }
 }

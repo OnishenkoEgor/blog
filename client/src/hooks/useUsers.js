@@ -1,44 +1,48 @@
 import store from "@/store";
 import { useRequest } from "./useRequest";
 
-const { get, post } = useRequest();
+const { get, post, remove, put } = useRequest();
 
 export function useUsers() {
 
     async function getUser(id) {
-        try {
-            return await get(`/api/users/${id}`)
-                .then(res => {
-                    return res
-                }).catch(e => { throw e })
-        } catch (e) {
-            console.error(e)
-            return false;
-        }
+        return get(`/api/users/${id}`)
+            .then(res => {
+                return res.status == 200 ? res.body : null;
+            }).catch(e => {
+                console.error(e)
+                return false
+            })
     }
 
     async function getAllUsers() {
-        try {
-            return await get('/api/users')
-                .then(res => {
-                    console.log(res)
-                    return res
-                })
-                .catch(e => {
-                    throw e
-                })
-        } catch (e) {
+        return get('/api/users')
+            .then(res => {
+                return res.status === 200 ? res.body : [];
+            })
+            .catch(e => {
+                console.error(e)
+                return false
+            })
+
+    }
+
+    async function updateUser(id, userData) {
+        return put(`/api/users/edit/${id}`, userData).then(res => {
+            return true
+        }).catch(e => {
             console.error(e)
             return false
-        }
+        })
     }
 
-    function updateUser() {
-
-    }
-
-    function deleteUser(id) {
-
+    async function deleteUser(id) {
+        return remove(`/api/users/delete/${id}`).then(res => {
+            return true
+        }).catch(e => {
+            console.error(e)
+            return false
+        })
     }
 
     function getUserId(user) {
@@ -48,5 +52,7 @@ export function useUsers() {
     return {
         getUser,
         getAllUsers,
+        deleteUser,
+        updateUser
     }
 }

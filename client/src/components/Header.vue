@@ -15,30 +15,36 @@
         </div>
         <div class="nav__content">
           <div class="nav__menu">
+            <router-link class="nav__link" :to="{ name: 'about' }"
+              >about</router-link
+            >
+            <router-link class="nav__link" :to="{ name: 'users' }"
+              >users</router-link
+            >
+            <router-link class="nav__link" :to="{ name: 'posts' }"
+              >posts</router-link
+            >
             <router-link
+              v-if="!logged"
               class="nav__link"
-              v-for="item in items"
-              :to="item.path"
-              >{{ item?.name }}</router-link
+              :to="{ name: 'auth' }"
+              >auth</router-link
             >
           </div>
-          <router-link
-            v-if="logged"
-            :to="`/users/${user?.id}`"
-            class="nav__icon"
-          >
-            <img
-              :src="
-                user?.photo ??
-                'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png'
-              "
-              alt=""
-            />
-            <p>{{ user?.name }}</p>
-            <div class="nav__icon-menu">
-              <div class="nav__icon-item" @click="logout">Logout</div>
+          <div v-if="logged" class="nav__icon">
+            <router-link :to="`/users/${user?.id}`" class="nav__icon-user">
+              <img
+                :src="user?.photo ?? require('@/assets/default.png')"
+                alt=""
+              />
+              <p>{{ user?.name }}</p>
+            </router-link>
+            <div class="nav__icon-content">
+              <div class="nav__icon-menu">
+                <div class="nav__icon-item" @click="logout">Logout</div>
+              </div>
             </div>
-          </router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -46,50 +52,18 @@
 </template>
 
 <script>
-import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { ref, onBeforeMount, computed, watch } from "vue";
+import { ref, computed } from "vue";
 
 import { useLogin } from "@/hooks/useLogin";
 
 export default {
   name: "Header",
-  setup(props, context) {
-    const items = ref([]);
-    const router = useRouter();
+  setup(props) {
     const store = useStore();
     const { logout } = useLogin();
-    const logged = ref(store.getters.logged);
-
-    items.value = [
-      {
-        path: "/about",
-        name: "about",
-      },
-      {
-        path: "/users",
-        name: "users",
-      },
-      {
-        path: "/posts",
-        name: "posts",
-      },
-      {
-        path:'/test',
-        name:'test'
-      }
-    ];
-    watch(logged, () => {
-      if (!logged) {
-        items.value.push({
-          path: "/auth",
-          name: "auth",
-        });
-      }
-    });
-
+    
     return {
-      items,
       logged: computed(() => store.getters.logged),
       user: computed(() => store.getters.getUser),
       logout,
@@ -136,15 +110,18 @@ export default {
 
   &__icon {
     position: relative;
-    display: grid;
-    grid-auto-flow: column;
-    column-gap: 8px;
-    align-items: center;
-    justify-content: center;
-    margin-left: 30px;
     cursor: pointer;
     font-weight: 600;
     text-transform: capitalize;
+    margin-left: 30px;
+
+    &-user {
+      display: grid;
+      grid-auto-flow: column;
+      column-gap: 8px;
+      align-items: center;
+      justify-content: center;
+    }
 
     img {
       width: 30px;
@@ -162,25 +139,30 @@ export default {
     }
 
     &:hover {
-      .nav__icon-menu {
+      .nav__icon-content {
         opacity: 1;
         visibility: visible;
         transform: translate(-50%, 0);
       }
     }
 
-    &-menu {
+    &-content {
       position: absolute;
-      width: 100%;
+      min-width: 100%;
+      width: max-content;
       left: 50%;
       top: 100%;
-      transform: translate(-50%, -3px);
-      border-radius: 4px;
-      overflow: hidden;
-      box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.1);
+      padding-top: 8px;
+      transform: translate(-50%, 3px);
       opacity: 0;
       visibility: hidden;
       transition: 0.3s all;
+    }
+
+    &-menu {
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.1);
     }
 
     &-item {

@@ -9,52 +9,49 @@ import SinglePostView from '../views/SinglePostView.vue'
 
 import TestView from '../views/TestPage.vue';
 
-const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    component: AboutView
-  },
-  {
-    path: '/auth',
-    name: 'auth',
-    component: AuthView
-  },
-  {
-    path: '/posts',
-    name: 'posts',
-    component: PostsView
-  },
-  {
-    path: '/posts/:id',
-    name: 'post',
-    component: SinglePostView
-  },
-  {
-    path: '/users',
-    name: 'users',
-    component: UsersView
-  },
-  {
-    path: '/users/:id',
-    name: 'user',
-    component: SingleUserView
-  },
-  {
-    path:'/test',
-    name:'test',
-    component:TestView
-  }
-]
 
-const router = createRouter({
+export default createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes: [
+    {
+      path: '/',
+      name: 'home',
+      component: HomeView
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: AboutView
+    },
+    {
+      path: '/auth',
+      name: 'auth',
+      component: AuthView
+    },
+    {
+      path: '/posts',
+      name: 'posts',
+      component: PostsView
+    },
+    {
+      path: '/posts/:id',
+      name: 'post',
+      component: SinglePostView
+    },
+    {
+      path: '/users',
+      name: 'users',
+      component: UsersView,
+    },
+    {
+      path: '/users/:id',
+      name: 'user',
+      component: SingleUserView
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: TestView
+    }
+  ]
 })
-
-export default router

@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <h1>Users</h1>
-    <user-list :users="users"></user-list>
+    <user-list v-if="users.length > 0" :users="users"></user-list>
+    <div v-else>
+      <img src="@/assets/preloader.gif" alt="" />
+    </div>
   </div>
 </template>
 
@@ -17,13 +20,11 @@ export default {
     let { getAllUsers } = useUsers();
 
     getAllUsers().then((res) => {
-      console.log(res);
       users.value = res;
     });
 
     return {
       users,
-      currentUserId: computed(() => store.getters.currentUserId),
     };
   },
 };
